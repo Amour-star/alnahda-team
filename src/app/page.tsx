@@ -15,50 +15,94 @@ export default function NahdaLandingPage() {
       className="min-h-screen bg-gradient-to-b from-emerald-50 to-white text-gray-900"
     >
       {/* NAVBAR */}
-      <header className="sticky top-0 z-40 backdrop-blur bg-white/70 border-b border-emerald-100">
-        <nav className="max-w-6xl mx-auto flex items-center justify-between px-4 py-3">
+      <header className="sticky top-0 z-50 bg-white/80 backdrop-blur border-b border-emerald-100 shadow-sm">
+        <nav className="max-w-6xl mx-auto flex items-center justify-between px-4 py-3 md:py-4">
+          {/* Logo + Title */}
           <div className="flex items-center gap-3">
-            <div className="h-10 w-10 rounded-2xl bg-emerald-600 text-white grid place-items-center font-bold">
+            <div className="h-10 w-10 rounded-2xl bg-emerald-600 text-white grid place-items-center font-bold shadow-sm">
               ن
             </div>
-            <span className="font-extrabold text-lg md:text-xl tracking-tight">
+            <span className="font-extrabold text-lg md:text-xl tracking-tight text-gray-900">
               فريق النهضة التطوعي
             </span>
           </div>
-          <ul className="hidden md:flex items-center gap-6 text-sm">
-            <li>
-              <a href="#about" className="hover:text-emerald-700">
-                من نحن
-              </a>
-            </li>
-            <li>
-              <a href="#goals" className="hover:text-emerald-700">
-                أهدافنا
-              </a>
-            </li>
-            <li>
-              <a href="#initiatives" className="hover:text-emerald-700">
-                مبادرات
-              </a>
-            </li>
-            <li>
-              <a href="#office" className="hover:text-emerald-700">
-                مكتب مارع
-              </a>
-            </li>
-            <li>
-              <a href="#contact" className="hover:text-emerald-700">
-                تواصل
-              </a>
-            </li>
+
+          {/* Desktop Menu */}
+          <ul className="hidden md:flex items-center gap-8 text-sm font-medium text-gray-700">
+            {[
+              { href: "#about", label: "من نحن" },
+              { href: "#goals", label: "أهدافنا" },
+              { href: "#initiatives", label: "مبادرات" },
+              { href: "#office", label: "مكتب مارع" },
+              { href: "#contact", label: "تواصل" },
+            ].map((item) => (
+              <li key={item.href}>
+                <a
+                  href={item.href}
+                  className="hover:text-emerald-700 hover:underline underline-offset-4 transition-colors"
+                >
+                  {item.label}
+                </a>
+              </li>
+            ))}
           </ul>
+
+          {/* Join Button (desktop only) */}
           <a
             href="#contact"
-            className="hidden md:inline-flex items-center gap-2 rounded-xl border border-emerald-600 text-emerald-700 px-4 py-2 text-sm hover:bg-emerald-600 hover:text-white transition"
+            className="hidden md:inline-flex items-center gap-2 rounded-xl border border-emerald-600 text-emerald-700 px-4 py-2 text-sm font-semibold hover:bg-emerald-600 hover:text-white transition-colors"
           >
             انضم إلينا
           </a>
+
+          {/* Mobile Menu Button */}
+          <button
+            id="menu-btn"
+            className="md:hidden flex items-center justify-center h-10 w-10 rounded-xl border border-emerald-200 text-emerald-700 hover:bg-emerald-50 transition"
+            onClick={() => {
+              const menu = document.getElementById("mobile-menu");
+              if (menu) menu.classList.toggle("hidden");
+            }}
+          >
+            ☰
+          </button>
         </nav>
+
+        {/* Mobile Dropdown Menu */}
+        <div
+          id="mobile-menu"
+          className="hidden md:hidden flex flex-col items-center gap-4 bg-white border-t border-emerald-100 px-4 py-4 text-gray-800 text-sm font-medium"
+        >
+          {[
+            { href: "#about", label: "من نحن" },
+            { href: "#goals", label: "أهدافنا" },
+            { href: "#initiatives", label: "مبادرات" },
+            { href: "#office", label: "مكتب مارع" },
+            { href: "#contact", label: "تواصل" },
+          ].map((item) => (
+            <a
+              key={item.href}
+              href={item.href}
+              className="block w-full text-center py-2 hover:text-emerald-700 hover:bg-emerald-50 rounded-lg transition"
+              onClick={() => {
+                const menu = document.getElementById("mobile-menu");
+                if (menu) menu.classList.add("hidden");
+              }}
+            >
+              {item.label}
+            </a>
+          ))}
+          <a
+            href="#contact"
+            className="inline-block w-full text-center mt-2 rounded-xl border border-emerald-600 text-emerald-700 px-4 py-2 font-semibold hover:bg-emerald-600 hover:text-white transition-colors"
+            onClick={() => {
+              const menu = document.getElementById("mobile-menu");
+              if (menu) menu.classList.add("hidden");
+            }}
+          >
+            انضم إلينا
+          </a>
+        </div>
       </header>
 
       {/* HERO */}
@@ -233,6 +277,7 @@ export default function NahdaLandingPage() {
       {/* CONTACT */}
       <section id="contact" className="max-w-6xl mx-auto px-4 py-12 md:py-16">
         <div className="grid md:grid-cols-2 gap-8 items-start">
+          {/* Contact Form */}
           <div className="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm">
             <h3 className="text-2xl md:text-3xl font-extrabold mb-2">
               تواصل معنا
@@ -241,11 +286,59 @@ export default function NahdaLandingPage() {
               نسأل الله التوفيق لنا ولكم لخدمة البلاد والعباد. يسعدنا تواصلكم
               واقتراحاتكم، وكذلك طلبات الانضمام للتطوع.
             </p>
-            <form onSubmit={(e) => e.preventDefault()} className="space-y-4">
+
+            {/* ✅ Working Contact Form */}
+            <form
+              onSubmit={async (e) => {
+                e.preventDefault();
+                const form = e.currentTarget;
+                const formData = new FormData(form);
+                const payload = {
+                  name: formData.get("name"),
+                  email: formData.get("email"),
+                  message: formData.get("message"),
+                };
+
+                const status = form.querySelector("#status");
+                if (status) status.textContent = "⏳ جارٍ الإرسال...";
+
+                try {
+                  const res = await fetch("/api/contact", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(payload),
+                  });
+
+                  const data = await res.json();
+
+                  if (data.ok) {
+                    if (status) {
+                      status.textContent = "✅ تم إرسال الرسالة بنجاح!";
+                      status.className = "text-green-600 mt-3";
+                    }
+                    form.reset();
+                  } else {
+                    if (status) {
+                      status.textContent =
+                        "❌ حدث خطأ أثناء الإرسال. حاول مرة أخرى.";
+                      status.className = "text-red-600 mt-3";
+                    }
+                  }
+                } catch (err) {
+                  if (status) {
+                    status.textContent = "⚠️ خطأ في الاتصال بالخادم.";
+                    status.className = "text-red-600 mt-3";
+                  }
+                }
+              }}
+              className="space-y-4"
+            >
               <div>
                 <label className="block text-sm mb-1">الاسم الكامل</label>
                 <input
+                  name="name"
                   type="text"
+                  required
                   placeholder="اكتب اسمك"
                   className="w-full rounded-xl border border-gray-300 px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-emerald-200"
                 />
@@ -253,7 +346,9 @@ export default function NahdaLandingPage() {
               <div>
                 <label className="block text-sm mb-1">البريد الإلكتروني</label>
                 <input
+                  name="email"
                   type="email"
+                  required
                   placeholder="name@example.com"
                   className="w-full rounded-xl border border-gray-300 px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-emerald-200"
                 />
@@ -261,24 +356,24 @@ export default function NahdaLandingPage() {
               <div>
                 <label className="block text-sm mb-1">الرسالة</label>
                 <textarea
+                  name="message"
                   rows={4}
+                  required
                   placeholder="اكتب رسالتك أو رغبتك بالتطوع"
                   className="w-full rounded-xl border border-gray-300 px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-emerald-200"
                 />
               </div>
               <button
                 type="submit"
-                className="w-full md:w-auto rounded-xl bg-emerald-600 text-white px-6 py-3 font-semibold hover:bg-emerald-700"
-                title="هذا مثال واجهة فقط—أضف ربطًا بخادم بريد لاحقًا"
+                className="w-full md:w-auto rounded-xl bg-emerald-600 text-white px-6 py-3 font-semibold hover:bg-emerald-700 transition"
               >
                 إرسال
               </button>
-              <p className="text-xs text-gray-500">
-                * هذا النموذج تجريبي. يمكن ربطه لاحقًا ببريد إلكتروني أو Google
-                Forms.
-              </p>
+              <p id="status" className="text-sm text-gray-600 mt-2"></p>
             </form>
           </div>
+
+          {/* Side Panel */}
           <div className="bg-emerald-600 text-white rounded-2xl p-6 md:p-8 shadow-sm">
             <h4 className="text-xl font-bold mb-3">لماذا نتطوع؟</h4>
             <p className="leading-8 text-emerald-50">

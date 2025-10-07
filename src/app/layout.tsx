@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import React from "react";
 import "./globals.css";
 import { Tajawal } from "next/font/google";
 
@@ -19,7 +20,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ar" dir="rtl" suppressHydrationWarning>
-      <body className={tajawal.className}>{children}</body>
+      <body className={tajawal.className} suppressHydrationWarning>
+        {children}
+      </body>
     </html>
   );
 }
