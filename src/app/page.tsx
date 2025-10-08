@@ -296,6 +296,7 @@ export default function NahdaLandingPage() {
                 const payload = {
                   name: formData.get("name"),
                   email: formData.get("email"),
+                  phone: formData.get("phone"), // ✅ Added phone
                   message: formData.get("message"),
                 };
 
@@ -343,6 +344,7 @@ export default function NahdaLandingPage() {
                   className="w-full rounded-xl border border-gray-300 px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-emerald-200"
                 />
               </div>
+
               <div>
                 <label className="block text-sm mb-1">البريد الإلكتروني</label>
                 <input
@@ -353,6 +355,19 @@ export default function NahdaLandingPage() {
                   className="w-full rounded-xl border border-gray-300 px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-emerald-200"
                 />
               </div>
+
+              {/* ✅ New Phone Field */}
+              <div>
+                <label className="block text-sm mb-1">رقم الهاتف</label>
+                <input
+                  name="phone"
+                  type="tel"
+                  placeholder="+963 9XX XXX XXX"
+                  pattern="^\+?[0-9\s\-]{8,15}$"
+                  className="w-full rounded-xl border border-gray-300 px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-emerald-200"
+                />
+              </div>
+
               <div>
                 <label className="block text-sm mb-1">الرسالة</label>
                 <textarea
@@ -363,6 +378,7 @@ export default function NahdaLandingPage() {
                   className="w-full rounded-xl border border-gray-300 px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-emerald-200"
                 />
               </div>
+
               <button
                 type="submit"
                 className="w-full md:w-auto rounded-xl bg-emerald-600 text-white px-6 py-3 font-semibold hover:bg-emerald-700 transition"
